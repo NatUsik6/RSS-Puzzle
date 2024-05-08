@@ -1,0 +1,4 @@
+public
+bootstrap
+*.json
+*.config.js
