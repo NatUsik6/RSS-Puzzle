@@ -1,1 +1,6 @@
-*
+public
+bootstrap
+*.json
+*.config.js
+.husky
+tsconfig.json
