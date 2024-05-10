@@ -1,9 +1,9 @@
 export const formData = (form: HTMLFormElement) => {
-    const inputs = form.querySelectorAll('input');
-    let values: {[prop: string]: string} = {};
+  const inputs = form.querySelectorAll('input');
+  const values: { [prop: string]: string } = {};
 
-    inputs.forEach(input => {
-        values[input.id] = input.value;
-    });
-    return values;
+  inputs.forEach((input) => {
+    values[input.id] = input.value;
+  });
+  return values;
 };
