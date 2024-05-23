@@ -17,9 +17,10 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
+    "autoprefixer": "^10.4.19",
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^12.0.2",
-    "css-loader": "^6.10.0",
+    "css-loader": "^6.11.0",
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^9.1.0",
@@ -32,7 +33,11 @@
     "html-webpack-plugin": "^5.6.0",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
+    "postcss-loader": "^8.1.1",
     "prettier": "3.2.5",
+    "sass": "^1.77.2",
+    "sass-loader": "^14.2.1",
+    "style-loader": "^4.0.0",
     "ts-loader": "^9.5.1",
     "typescript": "^5.4.5",
     "typescript-eslint": "^7.0.2",
@@ -54,6 +59,6 @@
     ]
   },
   "validate-branch-name": {
-    "pattern": "(^main$)|(^(feat|fix)\/RSS-PZ-[0-9]+_.+)"
+    "pattern": "(^main$)|(^(feat|fix)/RSS-PZ-[0-9]+_.+)"
   }
 }

@@ -1,9 +1,5 @@
-import { formData } from './form';
+import App from './pages/app';
+import './styles/style.scss';
 
-const form = document.querySelector('form')!;
-
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const data = formData(form);
-  console.log(data);
-});
+const app = new App();
+app.run();
