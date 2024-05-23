@@ -1,4 +1,5 @@
 import path, { resolve } from 'path';
+import autoprefixer from 'autoprefixer';
 import { fileURLToPath } from 'url';
 import ESlintPlugin from 'eslint-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
@@ -14,8 +15,22 @@ export default {
     module: {
         rules: [
             {
-                test: /\.css$/i,
-                use: ['style-loader', 'css-loader'],
+                test: /\.(scss)$/,
+                use: [
+                    'style-loader',
+                    'css-loader',
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            postcssOptions: {
+                                plugins: [
+                                    autoprefixer
+                                ]
+                            }
+                        }
+                    },
+                    'sass-loader'
+                ],
             },
             {
                 test: /\.ts$/i,
