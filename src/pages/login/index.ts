@@ -1,6 +1,8 @@
 import { createElement, getFormData } from '../../core/scripts';
 
 class LoginPage {
+  private regEx: RegExp = /^[A-Z][a-zA-Z-]+$/;
+
   private form: HTMLFormElement;
 
   constructor(id: string) {
@@ -16,22 +18,45 @@ class LoginPage {
     });
   }
 
-  private setSubmitButtonState(): void {
+  private checkInputState = (): void => {
     const buttonLogin = this.form.querySelector('.login-button') as HTMLButtonElement;
+    const inputs = this.form.querySelectorAll('input');
 
-    if (Object.values(getFormData(this.form)).every((value) => value.trim()) && buttonLogin) {
+    let allValid = true;
+    inputs.forEach((input) => {
+      const value = input.value.trim();
+      const errorMessageDiv = input.nextElementSibling as HTMLDivElement;
+      if (value.length < input.minLength) {
+        input.classList.remove('is-valid');
+        input.classList.add('is-invalid');
+        errorMessageDiv.textContent = `Input must be at least ${input.minLength} characters long.`;
+        allValid = false;
+      } else if (!this.regEx.test(value)) {
+        input.classList.remove('is-valid');
+        input.classList.add('is-invalid');
+        errorMessageDiv.textContent =
+          'Input must start with an uppercase letter and contain only letters or hyphens.';
+        allValid = false;
+      } else {
+        input.classList.remove('is-invalid');
+        input.classList.add('is-valid');
+        errorMessageDiv.textContent = '';
+      }
+    });
+
+    if (allValid && buttonLogin) {
       buttonLogin.disabled = false;
     } else if (buttonLogin) {
       buttonLogin.disabled = true;
     }
-  }
+  };
 
   private createFirstNameInput(): void {
     const divFirstName = createElement('div', 'first-name mb-3', this.form);
 
     const labelFirstName = createElement(
       'label',
-      'login-form-label  form-label',
+      'login-form-label form-label',
       divFirstName
     ) as HTMLLabelElement;
     labelFirstName.textContent = 'First Name';
@@ -44,8 +69,12 @@ class LoginPage {
     ) as HTMLInputElement;
     inputFirstName.id = 'first-name-form-input';
     inputFirstName.type = 'text';
+    inputFirstName.minLength = 3;
     inputFirstName.required = true;
-    inputFirstName.addEventListener('input', this.setSubmitButtonState);
+    inputFirstName.pattern = this.regEx.source;
+    inputFirstName.addEventListener('input', this.checkInputState);
+
+    createElement('div', 'invalid-feedback', divFirstName);
   }
 
   private createSurnameInput(): void {
@@ -66,8 +95,12 @@ class LoginPage {
     ) as HTMLInputElement;
     inputSurname.id = 'surname-form-input';
     inputSurname.type = 'text';
+    inputSurname.minLength = 4;
     inputSurname.required = true;
-    inputSurname.addEventListener('input', this.setSubmitButtonState);
+    inputSurname.pattern = this.regEx.source;
+    inputSurname.addEventListener('input', this.checkInputState);
+
+    createElement('div', 'invalid-feedback', divSurname);
   }
 
   private createButtonLogin(): void {
