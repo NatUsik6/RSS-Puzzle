@@ -13,8 +13,7 @@ class LoginPage {
 
     this.form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const data = getFormData(this.form);
-      console.log(data);
+      this.saveFormData();
     });
   }
 
@@ -50,6 +49,12 @@ class LoginPage {
       buttonLogin.disabled = true;
     }
   };
+
+  private saveFormData(): void {
+    const data = getFormData(this.form);
+    localStorage.setItem('firstName', data['first-name-form-input']);
+    localStorage.setItem('surname', data['surname-form-input']);
+  }
 
   private createFirstNameInput(): void {
     const divFirstName = createElement('div', 'first-name mb-3', this.form);
