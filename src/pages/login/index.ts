@@ -1,7 +1,7 @@
 import { createElement, getFormData } from '../../core/scripts';
 
 class LoginPage {
-  private regEx: RegExp = /^[A-Z][a-zA-Z-]+$/;
+  private regEx: RegExp = /^[A-Z][a-zA-Z\-]+$/;
 
   private form: HTMLFormElement;
 
@@ -52,8 +52,30 @@ class LoginPage {
 
   private saveFormData(): void {
     const data = getFormData(this.form);
-    localStorage.setItem('firstName', data['first-name-form-input']);
-    localStorage.setItem('surname', data['surname-form-input']);
+    const formData = {
+      firstName: data['first-name-form-input'],
+      surname: data['surname-form-input'],
+    };
+    localStorage.setItem('formData', JSON.stringify(formData));
+  }
+
+  private loadFormData(): void {
+    const formData = localStorage.getItem('formData');
+    if (formData) {
+      const { firstName, surname } = JSON.parse(formData);
+      const inputFirstName = this.form.querySelector('#first-name-form-input') as HTMLInputElement;
+      const inputSurname = this.form.querySelector('#surname-form-input') as HTMLInputElement;
+
+      if (firstName) {
+        inputFirstName.value = firstName;
+        inputFirstName.dispatchEvent(new Event('input'));
+      }
+
+      if (surname) {
+        inputSurname.value = surname;
+        inputSurname.dispatchEvent(new Event('input'));
+      }
+    }
   }
 
   private createFirstNameInput(): void {
@@ -128,6 +150,8 @@ class LoginPage {
     this.createButtonLogin();
 
     document.querySelector('body')!.className = 'bg-dark-subtle bg-gradient';
+
+    this.loadFormData();
 
     return this.form;
   }
