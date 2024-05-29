@@ -56,24 +56,33 @@ class LoginPage {
       firstName: data['first-name-form-input'],
       surname: data['surname-form-input'],
     };
-    localStorage.setItem('formData', JSON.stringify(formData));
+    const jsonString = JSON.stringify(formData);
+    localStorage.setItem('formData', jsonString);
   }
 
   private loadFormData(): void {
-    const formData = localStorage.getItem('formData');
-    if (formData) {
-      const { firstName, surname } = JSON.parse(formData);
-      const inputFirstName = this.form.querySelector('#first-name-form-input') as HTMLInputElement;
-      const inputSurname = this.form.querySelector('#surname-form-input') as HTMLInputElement;
+    const formDataString = localStorage.getItem('formData');
+    if (formDataString) {
+      try {
+        const formData = JSON.parse(formDataString);
+        const { firstName, surname } = formData;
 
-      if (firstName) {
-        inputFirstName.value = firstName;
-        inputFirstName.dispatchEvent(new Event('input'));
-      }
+        const inputFirstName = this.form.querySelector(
+          '#first-name-form-input'
+        ) as HTMLInputElement;
+        const inputSurname = this.form.querySelector('#surname-form-input') as HTMLInputElement;
 
-      if (surname) {
-        inputSurname.value = surname;
-        inputSurname.dispatchEvent(new Event('input'));
+        if (firstName) {
+          inputFirstName.value = firstName;
+          inputFirstName.dispatchEvent(new Event('input'));
+        }
+
+        if (surname) {
+          inputSurname.value = surname;
+          inputSurname.dispatchEvent(new Event('input'));
+        }
+      } catch (e) {
+        console.error('Error parsing formData from localStorage', e);
       }
     }
   }
