@@ -1,7 +1,7 @@
 import { createElement, getFormData } from '../../core/scripts';
 
 class LoginPage {
-  private regEx: RegExp = /^[A-Z][a-zA-Z-]+$/;
+  private regEx: RegExp = /^[A-Z][a-zA-Z\-]+$/;
 
   private form: HTMLFormElement;
 
@@ -13,8 +13,7 @@ class LoginPage {
 
     this.form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const data = getFormData(this.form);
-      console.log(data);
+      this.saveFormData();
     });
   }
 
@@ -50,6 +49,43 @@ class LoginPage {
       buttonLogin.disabled = true;
     }
   };
+
+  private saveFormData(): void {
+    const data = getFormData(this.form);
+    const formData = {
+      firstName: data['first-name-form-input'],
+      surname: data['surname-form-input'],
+    };
+    const jsonString = JSON.stringify(formData);
+    localStorage.setItem('formData', jsonString);
+  }
+
+  private loadFormData(): void {
+    const formDataString = localStorage.getItem('formData');
+    if (formDataString) {
+      try {
+        const formData = JSON.parse(formDataString);
+        const { firstName, surname } = formData;
+
+        const inputFirstName = this.form.querySelector(
+          '#first-name-form-input'
+        ) as HTMLInputElement;
+        const inputSurname = this.form.querySelector('#surname-form-input') as HTMLInputElement;
+
+        if (firstName) {
+          inputFirstName.value = firstName;
+          inputFirstName.dispatchEvent(new Event('input'));
+        }
+
+        if (surname) {
+          inputSurname.value = surname;
+          inputSurname.dispatchEvent(new Event('input'));
+        }
+      } catch (e) {
+        console.error('Error parsing formData from localStorage', e);
+      }
+    }
+  }
 
   private createFirstNameInput(): void {
     const divFirstName = createElement('div', 'first-name mb-3', this.form);
@@ -123,6 +159,8 @@ class LoginPage {
     this.createButtonLogin();
 
     document.querySelector('body')!.className = 'bg-dark-subtle bg-gradient';
+
+    this.loadFormData();
 
     return this.form;
   }

@@ -12,11 +12,11 @@ export function createElement(
 
 export function getFormData(form: HTMLFormElement): { [prop: string]: string } {
   const inputs = form.querySelectorAll('input');
-  const values: { [prop: string]: string } = {};
+  const data: { [prop: string]: string } = {};
 
   inputs.forEach((input) => {
-    values[input.id] = input.value;
+    data[input.id] = input.value;
   });
 
-  return values;
+  return data;
 }

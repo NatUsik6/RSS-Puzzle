@@ -23,6 +23,7 @@
     "linebreak-style": ["warn", "windows"],
     "import/prefer-default-export": "off",
     "import/no-unresolved": [2, { "commonjs": true, "amd": true }],
+    "no-useless-escape": "off",
     "import/extensions": [
       "error",
       "ignorePackages",
